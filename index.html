@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>H</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/main_style.css">
+		
+		<script src="js/jquery-1.8.2.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/calcul.js"></script>
+		<script src="js/FileSaver.js"></script>
+	</head>
+	<body>
+		<div id="input_wrap" class="row well">
+			<div id="saisie" class="span5">
+				<h3>Saisie</h3>
+				<form class="form-horizontal">
+					<div class="control-group">
+						<label for="in_hArrive" class="control-label">Heure d'arrivée</label>
+						<div class="controls">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-time"></i></span>
+								<input type="text" id="in_hArrive" class="input-mini" />
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="in_hToDo" class="control-label">Heures à faire</label>
+						<div class="controls">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-time"></i></span>
+								<input type="text" id="in_hToDo" class="input-mini" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<div class="controls">
+							<label for="in_chkMidi" class="checkbox">
+								<input type="checkbox" id="in_chkMidi" checked="checked" /> Compter le midi
+							</label>
+							<input type="button" class="btn btn-primary" id="bt_addHisto" value="Ajouter à l'historique" />
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div id="result" class="span7">
+				<h3>Calculs</h3>
+				<table>
+					<tr>
+						<td>Journée minimale : </td>
+						<td>sortie à <span id="out_h0" class="label label-info"></span> avec <span class="label label-info">0h00</span> de crédit d'heure</td>
+					</tr>
+					<tr>
+						<td>Journée complète : </td>
+						<td>sortie à <span id="out_h733" class="label label-info"></span> avec <span id="out_cred733" class="label label-info"></span> de crédit d'heure</td>
+					</tr>
+					<tr>
+						<td>
+							Sortie à 
+							<select id="in_hCustom" class="input-small">
+								<option value='960'>16h00</option>
+								<option value='970'>16h10</option>
+								<option value='980'>16h20</option>
+								<option value='990' selected>16h30</option>
+								<option value='1000'>16h40</option>
+								<option value='1010'>16h50</option>
+								<option value='1020'>17h00</option>
+								<option value='1030'>17h10</option>
+								<option value='1040'>17h20</option>
+								<option value='1050'>17h30</option>
+								<option value='1060'>17h40</option>
+								<option value='1070'>17h50</option>
+								<option value='1080'>18h00</option>
+							</select> :
+						</td>
+						<td><span id="out_credCustom" class="label label-info"></span> de crédit d'heure</td>
+					</tr>
+				</table>
+				
+				<div id="bad_hours" class="alert alert-error">
+				    <!--<button type="button" class="close" data-dismiss="alert">×</button>-->
+				    <strong>Erreur!</strong> Les heures saisies ne sont pas correctes.
+			    </div>
+			</div>
+		</div>
+
+		<div id="historique" class="well">
+			<h3>Historique <button id="import_bt" class="btn btn-inverse btn-mini">Importer</button> <button id="export_bt" class="btn btn-inverse btn-mini">Exporter</button></h3>
+		    <table class="table table-bordered table-striped">
+			    <thead>
+				    <tr>
+					    <th>Jour</th>
+					    <th>Arrivée</th>
+					    <th>Sortie</th>
+					    <th>Crédit accumulé</th>
+					    <th>Options</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+				    
+			    </tbody>
+		    </table>
+		    
+		    <div id="export">
+			</p>
+		
+		</div>
+		
+		
+		<div id="editHistoModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Modifications...</h3>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="control-group">
+						<label for="edit_date" class="control-label">Date</label>
+						<div class="controls">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-calendar"></i></span>
+								<input type="date" id="edit_date" class="input-mini" value="" />
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="edit_hArrive" class="control-label">Heure d'arrivée</label>
+						<div class="controls">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-time"></i></span>
+								<input type="text" id="edit_hArrive" class="input-mini" value="" />
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="edit_hToDo" class="control-label">Heures à faire</label>
+						<div class="controls">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-time"></i></span>
+								<input type="text" id="edit_hToDo" class="input-mini" value="" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<div class="controls">
+							<input type="hidden" id="edit_index" value="0" />
+							<label for="edit_sortieCalc" class="checkbox">
+								<input type="checkbox" id="edit_sortieCalc" /> Calculer la sortie
+							</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+				<button id="edit_validBT" class="btn btn-primary">Sauvegarder</button>
+			</div>
+		</div>
+		
+		
+<div id="importHistoModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Importer</h3>
+	</div>
+	<div class="modal-body">
+		<input id="data2import" type="file" />
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+		<button id="import_validBT" class="btn btn-primary">Importer</button>
+	</div>
+</div>
+		
+		<script src="js/less-1.3.0.min.js" type="text/javascript"></script>
+	</body>
+</html>

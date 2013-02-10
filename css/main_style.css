@@ -1,0 +1,38 @@
+@hgt_saisie_elt: 230px; 
+
+
+#input_wrap {
+	margin: 20px;
+	padding:0;
+}
+
+#saisie {
+	height: @hgt_saisie_elt;
+	padding: 0;
+	border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+#result {
+	height: @hgt_saisie_elt;
+	padding: 0 20px;
+	margin-left:0;
+	border-left: 1px solid white;
+}
+
+#result table tr td{
+	padding-bottom: 10px;
+}
+
+#historique {
+	margin: 20px;
+	padding:0 20px;
+}
+/*
+tr[class^="week_"] {
+	border: 8px solid red;
+}*/
+
+.week_end td{
+	border-bottom : 1px solid black;
+	
+}
